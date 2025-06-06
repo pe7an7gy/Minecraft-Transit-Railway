@@ -134,10 +134,10 @@ public class VehicleExtension extends Vehicle implements Utilities {
 							final String nextStationFormatted = IGui.insertTranslation(TranslationProvider.GUI_MTR_NEXT_STATION_ANNOUNCEMENT_CJK, TranslationProvider.GUI_MTR_NEXT_STATION_ANNOUNCEMENT, 1, nextStationName);
 							narrateText.add(nextStationFormatted);
 							chatText.add(TextHelper.literal(IGui.formatStationName(nextStationFormatted)));
-						}
-						
-						if (nextIsOnRequest) {
-							narrateText.add(" (on request) ");
+							if (nextIsOnRequest) {
+								narrateText.add(" (on request) ");
+								chatText.add(" (on request) ");
+							}
 						}
 
 						final ObjectArrayList<String> narrateTextThisStation = new ObjectArrayList<>();

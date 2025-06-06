@@ -5,9 +5,7 @@ import org.mtr.core.data.SavedRailBase;
 import org.mtr.core.data.TransportMode;
 import org.mtr.mapping.holder.ClickableWidget;
 import org.mtr.mapping.holder.MutableText;
-import org.mtr.mapping.mapper.GraphicsHolder;
-import org.mtr.mapping.mapper.ScreenExtension;
-import org.mtr.mapping.mapper.TextFieldWidgetExtension;
+import org.mtr.mapping.mapper.*;
 import org.mtr.mapping.tool.TextCase;
 import org.mtr.mod.Init;
 import org.mtr.mod.client.IDrawing;
@@ -21,6 +19,8 @@ public abstract class SavedRailScreenBase<T extends SavedRailBase<T, U>, U exten
 	protected final boolean showScheduleControls;
 	protected final WidgetShorterSlider sliderDwellTimeMin;
 	protected final WidgetShorterSlider sliderDwellTimeSec;
+	
+	protected final CheckboxWidgetExtension buttonIsOnRequest;
 
 	private final TextFieldWidgetExtension textFieldSavedRailNumber;
 
@@ -46,6 +46,9 @@ public abstract class SavedRailScreenBase<T extends SavedRailBase<T, U>, U exten
 
 		sliderDwellTimeMin = new WidgetShorterSlider(0, 0, (int) Math.floor(MAX_DWELL_TIME / 2F / SECONDS_PER_MINUTE), TranslationProvider.GUI_MTR_ARRIVAL_MIN::getString, null);
 		sliderDwellTimeSec = new WidgetShorterSlider(0, 0, SECONDS_PER_MINUTE * 2 - 1, 10, 2, value -> TranslationProvider.GUI_MTR_ARRIVAL_SEC.getString(value / 2F), null);
+		
+		buttonIsOnRequest = new CheckboxWidgetExtension(0, 0, 0, SQUARE_SIZE, true, this::setIsOnRequest);
+		buttonIsOnRequest.setMessage2("Is on Request?");
 	}
 
 	@Override
@@ -103,4 +106,8 @@ public abstract class SavedRailScreenBase<T extends SavedRailBase<T, U>, U exten
 	}
 
 	protected abstract TranslationProvider.TranslationHolder getNumberStringKey();
+	
+	private void setIsOnRequest(boolean isOnRequest) {
+		buttonIsOnRequest.setChecked(isOnRequest);
+	}
 }

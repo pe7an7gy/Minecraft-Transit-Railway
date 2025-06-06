@@ -4,8 +4,7 @@ import org.mtr.core.data.*;
 import org.mtr.core.operation.UpdateDataRequest;
 import org.mtr.libraries.it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import org.mtr.mapping.holder.MutableText;
-import org.mtr.mapping.mapper.GraphicsHolder;
-import org.mtr.mapping.mapper.ScreenExtension;
+import org.mtr.mapping.mapper.*;
 import org.mtr.mod.InitClient;
 import org.mtr.mod.client.MinecraftClientData;
 import org.mtr.mod.data.IGui;
@@ -37,6 +36,7 @@ public class PlatformScreen extends SavedRailScreenBase<Platform, Station> {
 		sliderDwellTimeMin.setValue((int) Math.floor(savedRailBase.getDwellTime() / 1000F / SECONDS_PER_MINUTE));
 		sliderDwellTimeSec.setY2(SQUARE_SIZE * 5 / 2 + TEXT_FIELD_PADDING);
 		sliderDwellTimeSec.setValue((int) ((savedRailBase.getDwellTime() / 500) % (SECONDS_PER_MINUTE * 2)));
+		buttonIsOnRequest.setY2(SQUARE_SIZE * 3 + TEXT_FIELD_PADDING);
 	}
 
 	@Override
@@ -47,10 +47,10 @@ public class PlatformScreen extends SavedRailScreenBase<Platform, Station> {
 		}
 
 		// Draw route lists
-		graphicsHolder.drawText(ROUTES_AT_PLATFORM_TEXT, SQUARE_SIZE, SQUARE_SIZE * 4 + TEXT_FIELD_PADDING + TEXT_PADDING, ARGB_WHITE, false, GraphicsHolder.getDefaultLight());
+		graphicsHolder.drawText(ROUTES_AT_PLATFORM_TEXT, SQUARE_SIZE, SQUARE_SIZE * 5 + TEXT_FIELD_PADDING + TEXT_PADDING, ARGB_WHITE, false, GraphicsHolder.getDefaultLight());
 		int i = 0;
 		for (Route rts : routes) {
-			graphicsHolder.drawText(IGui.formatStationName(rts.getName()), SQUARE_SIZE + textWidth, (SQUARE_SIZE * 4) + (10 * i) + TEXT_FIELD_PADDING + TEXT_PADDING, ARGB_BLACK + rts.getColor(), false, GraphicsHolder.getDefaultLight());
+			graphicsHolder.drawText(IGui.formatStationName(rts.getName()), SQUARE_SIZE + textWidth, (SQUARE_SIZE * 5) + (10 * i) + TEXT_FIELD_PADDING + TEXT_PADDING, ARGB_BLACK + rts.getColor(), false, GraphicsHolder.getDefaultLight());
 			i++;
 		}
 	}
@@ -60,6 +60,7 @@ public class PlatformScreen extends SavedRailScreenBase<Platform, Station> {
 		final int minutes = sliderDwellTimeMin.getIntValue();
 		final float second = sliderDwellTimeSec.getIntValue() / 2F;
 		savedRailBase.setDwellTime((long) ((second + (long) minutes * SECONDS_PER_MINUTE) * 1000));
+		savedRailBase.setIsOnRequest(buttonIsOnRequest.isChecked2());
 
 		InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketUpdateData(new UpdateDataRequest(MinecraftClientData.getDashboardInstance()).addPlatform(savedRailBase)));
 
