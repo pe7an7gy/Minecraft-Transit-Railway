@@ -136,7 +136,7 @@ public class VehicleExtension extends Vehicle implements Utilities {
 							chatText.add(TextHelper.literal(IGui.formatStationName(nextStationFormatted)));
 							if (nextIsOnRequest) {
 								narrateText.add(" (on request) ");
-								chatText.add(" (on request) ");
+								chatText.add(TextHelper.literal(" (on request) "));
 							}
 						}
 

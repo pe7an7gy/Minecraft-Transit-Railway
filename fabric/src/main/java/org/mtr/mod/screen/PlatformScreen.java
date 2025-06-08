@@ -3,7 +3,9 @@ package org.mtr.mod.screen;
 import org.mtr.core.data.*;
 import org.mtr.core.operation.UpdateDataRequest;
 import org.mtr.libraries.it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+import org.mtr.mapping.holder.ClickableWidget;
 import org.mtr.mapping.holder.MutableText;
+import org.mtr.mapping.holder.Text;
 import org.mtr.mapping.mapper.*;
 import org.mtr.mod.InitClient;
 import org.mtr.mod.client.MinecraftClientData;
@@ -16,6 +18,8 @@ public class PlatformScreen extends SavedRailScreenBase<Platform, Station> {
 	private static final MutableText DWELL_TIME_TEXT = TranslationProvider.GUI_MTR_DWELL_TIME.getMutableText();
 	private static final MutableText ROUTES_AT_PLATFORM_TEXT = TranslationProvider.GUI_MTR_ROUTES_AT_PLATFORM.getMutableText();
 	private final ObjectOpenHashSet<Route> routes = new ObjectOpenHashSet<>();
+	
+	private final CheckboxWidgetExtension buttonIsOnRequest;
 
 	public PlatformScreen(Platform savedRailBase, TransportMode transportMode, ScreenExtension previousScreenExtension) {
 		super(savedRailBase, transportMode, previousScreenExtension, DWELL_TIME_TEXT, ROUTES_AT_PLATFORM_TEXT);
@@ -27,6 +31,10 @@ public class PlatformScreen extends SavedRailScreenBase<Platform, Station> {
 				}
 			}
 		}
+		
+		buttonIsOnRequest = new CheckboxWidgetExtension(0, 0, 0, SQUARE_SIZE, true, checked -> {
+		});
+		buttonIsOnRequest.setMessage2(new Text(TextHelper.literal("Is on Request?").data));
 	}
 
 	@Override
@@ -36,7 +44,12 @@ public class PlatformScreen extends SavedRailScreenBase<Platform, Station> {
 		sliderDwellTimeMin.setValue((int) Math.floor(savedRailBase.getDwellTime() / 1000F / SECONDS_PER_MINUTE));
 		sliderDwellTimeSec.setY2(SQUARE_SIZE * 5 / 2 + TEXT_FIELD_PADDING);
 		sliderDwellTimeSec.setValue((int) ((savedRailBase.getDwellTime() / 500) % (SECONDS_PER_MINUTE * 2)));
-		buttonIsOnRequest.setY2(SQUARE_SIZE * 3 + TEXT_FIELD_PADDING);
+		buttonIsOnRequest.setX2(SQUARE_SIZE + textWidth);
+		buttonIsOnRequest.setY2(SQUARE_SIZE * 4 + TEXT_FIELD_PADDING);
+		buttonIsOnRequest.setChecked(savedRailBase.getIsOnRequest());
+		
+		addChild(new ClickableWidget(buttonIsOnRequest));
+		
 	}
 
 	@Override
