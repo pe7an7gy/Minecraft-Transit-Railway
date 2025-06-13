@@ -9,6 +9,7 @@ import org.mtr.libraries.it.unimi.dsi.fastutil.objects.ObjectObjectImmutablePair
 import org.mtr.mapping.holder.*;
 import org.mtr.mapping.mapper.EntityHelper;
 import org.mtr.mod.InitClient;
+import org.mtr.mod.Init;
 import org.mtr.mod.KeyBindings;
 import org.mtr.mod.generated.lang.TranslationProvider;
 import org.mtr.mod.item.ItemDepotDriverKey;
@@ -97,6 +98,16 @@ public class VehicleRidingMovement {
 				final Screen currentScreen = minecraftClient.getCurrentScreenMapped();
 				if (MinecraftClientData.getLift(ridingVehicleId) != null && (currentScreen == null || !(currentScreen.data instanceof LiftSelectionScreen))) {
 					minecraftClient.openScreen(new Screen(new LiftSelectionScreen(ridingVehicleId)));
+				}
+				if (MinecraftClientData.getLift(ridingVehicleId) == null && ridingSidingId != 0) {
+					Siding siding = MinecraftClientData.getInstance().sidingIdMap.get(sidingId);
+					if(siding != null){
+						Vehicle vehicle = siding.findVehicleById(ridingVehicleId);
+						if(vehicle != null){
+							vehicle.setIsRequestedStop(true);
+						}
+					}
+					Init.LOGGER.info("Requested stop for riding vehicle ID {}", ridingVehicleId);
 				}
 			}
 
