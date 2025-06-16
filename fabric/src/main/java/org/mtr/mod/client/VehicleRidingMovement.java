@@ -104,7 +104,7 @@ public class VehicleRidingMovement {
 					if(siding != null){
 						Vehicle vehicle = siding.findVehicleById(ridingVehicleId);
 						if(vehicle != null){
-							vehicle.setIsRequestedStop(true);
+							vehicle.setIsStopRequested(true);
 						}
 					}
 					Init.LOGGER.info("Requested stop for riding vehicle ID {}", ridingVehicleId);
