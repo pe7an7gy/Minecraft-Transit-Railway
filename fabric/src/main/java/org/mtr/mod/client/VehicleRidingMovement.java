@@ -102,7 +102,7 @@ public class VehicleRidingMovement {
 					minecraftClient.openScreen(new Screen(new LiftSelectionScreen(ridingVehicleId)));
 				}
 				if (MinecraftClientData.getLift(ridingVehicleId) == null && ridingSidingId != 0) {
-					Siding siding = MinecraftClientData.getInstance().sidingIdMap.get(sidingId);
+					Siding siding = MinecraftClientData.getInstance().sidingIdMap.get(ridingSidingId);
 					if(siding != null){
 						Vehicle vehicle = siding.findVehicleById(ridingVehicleId);
 						if(vehicle != null){
