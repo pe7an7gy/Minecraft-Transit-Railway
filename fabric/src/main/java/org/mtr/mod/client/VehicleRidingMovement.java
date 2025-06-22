@@ -17,6 +17,7 @@ import org.mtr.mod.generated.lang.TranslationProvider;
 import org.mtr.mod.item.ItemDepotDriverKey;
 import org.mtr.mod.item.ItemDriverKey;
 import org.mtr.mod.packet.PacketUpdateVehicleRidingEntities;
+import org.mtr.mod.packet.PacketRequestStop;
 import org.mtr.mod.render.PositionAndRotation;
 import org.mtr.mod.render.RenderVehicleHelper;
 import org.mtr.mod.screen.LiftSelectionScreen;
@@ -102,14 +103,7 @@ public class VehicleRidingMovement {
 					minecraftClient.openScreen(new Screen(new LiftSelectionScreen(ridingVehicleId)));
 				}
 				if (MinecraftClientData.getLift(ridingVehicleId) == null && ridingSidingId != 0) {
-					Siding siding = MinecraftClientData.getInstance().sidingIdMap.get(ridingSidingId);
-					if(siding != null){
-						Vehicle vehicle = siding.findVehicleById(ridingVehicleId);
-						if(vehicle != null){
-							vehicle.setIsStopRequested(true);
-						}
-					}
-					Init.LOGGER.info("Requested stop for riding vehicle ID {}", ridingVehicleId);
+					InitClient.REGISTRY_CLIENT.sendPacketToServer(PacketRequestStop.create(ridingSidingId, ridingVehicleId));
 				}
 			}
 
